@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+
+<Module>
+
+<ModulePrefs title="The New York Times"
+author="Sagar Dudhande"
+author_email="dudhande@gmail.com"
+directory_title="The New York Times"
+description="The New York Times. This gadget will display the top news stories on NYTimes.com. It will also give you the option to display just the title of the story or include the date and summary. The New York Times is an American daily newspaper founded in 1851 and published in New York City. The largest metropolitan newspaper in the United States, The Gray Lady named for its staid appearance and style is regarded as a national newspaper of record."
+height="350"
+width="235"
+category="news"
+scrolling="true"
+singleton="false" 
+title_url="http://www.bollywoodgirles.blogspot.com/"
+screenshot="https://facebook4me.googlecode.com/svn/trunk/rss/nytimes/screen.png" 
+thumbnail="https://facebook4me.googlecode.com/svn/trunk/rss/nytimes/thumb.jpg" />
+
+
+  <UserPref name="show_date" display_name="Show Dates?" datatype="bool"/>
+
+  <UserPref name="show_summ" display_name="Show Summaries?" datatype="bool"/>
+  <UserPref name="num_entries" display_name="Number of Entries:" />
+
+  <Content type="html">
+ <![CDATA[ 
+
+<center>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- blog -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:234px;height:60px"
+     data-ad-client="ca-pub-3386093070956984"
+     data-ad-slot="5503418849"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+</center>
+ <table align="center" bgcolor="#ffffff"><tr><div align="center"><a href="http://bollywoodgirles.blogspot.com" target="_blank"><img src="https://facebook4me.googlecode.com/svn/trunk/rss/nytimes/logo.gif" alt="News" border="0"></a>
+     <br>  </div></tr>
+ 
+ <tr>
+    
+	<style> #content_div { font-size: 80%;  margin: 5px; background-color: #FFFFff;} </style>
+	
+ 
+    <div id=content_div></div>
+     <script type="text/javascript">
+
+     // Get userprefs
+     var prefs = new _IG_Prefs();
+     var showdate = prefs.getBool("show_date");
+     var summary = prefs.getBool("show_summ");
+     var entries = prefs.getInt("num_entries");
+
+     // If user wants to display more than 100 entries, display an error
+     // and set the value to 100, the max allowed.
+     if (entries > 100)
+     {
+         alert("You cannot display more than 100 entries.");
+         entries = 100;
+     }
+
+     // Use the _IG_FetchFeedAsJSON() function to retrieve core feed data from
+     // the specified URL. Then combine the data with HTML markup for display in
+     // the gadget.
+     _IG_FetchFeedAsJSON("http://feeds.nytimes.com/nyt/rss/HomePage",
+              function(feed) { 
+              if (feed == null){ 
+                 alert("There is no data.");
+                 return;
+              }
+     
+         // Start building HTML string that will be displayed in gadget.
+         var html = "";
+
+         // Access the fields in the feed
+         html += "<div><b>" + feed.Title + "</b></div>";
+     
+         // Access the data for a given entry
+         if (feed.Entry) {
+             for (var i = 0; i < feed.Entry.length; i++) {
+                 html += "<div>"
+
+                 + "<a target='_blank' href='" + feed.Entry[i].Link + "'>"
+                 + feed.Entry[i].Title
+                 + "</a> ";
+                 if (showdate==true)
+                 { 
+                     // The feed entry Date field contains the timestamp in seconds
+                     // since Jan. 1, 1970. To convert it to the milliseconds needed
+                     // to initialize the JavaScript Date object with the correct date, 
+                     // multiply by 1000.
+                     var milliseconds = (feed.Entry[i].Date) * 1000; 
+                     var date = new Date(milliseconds); 
+                     html += date.toLocaleDateString();
+                     html += " ";
+                     html += date.toLocaleTimeString(); 
+                 } 
+                 if (summary==true) { 
+                     html += "<br><i>" + feed.Entry[i].Summary + "</i>";
+                 }
+                 html += "</div>";
+             }
+         }
+     _gel("content_div").innerHTML = html;
+
+     // The rest of the function parameters, which are optional: the number
+     // of entries to return, and whether to return summaries.
+     }, entries, summary);
+ 
+  </script>
+</tr></table>
+<p/>
+
+
+
+]]>
+</Content>
+</Module>
